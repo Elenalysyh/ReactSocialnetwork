@@ -1,0 +1,15 @@
+.item img {
+    width: 20px;
+    height: 20px;
+    padding-right: 15px;
+}
+
+.item {
+    list-style: none;
+    margin: 15px;
+}
+
+.items {
+    margin: 0;
+    padding: 0;
+}
