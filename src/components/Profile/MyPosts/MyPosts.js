@@ -17,7 +17,7 @@ let postsElements = props.profilePage.myposts.map(item => <Post kye={item.id} sr
         <div className={style.posts}>My post
             <div>
                 <div>
-                    <textarea ref={newPostElement} onChange={onChangePost} value={props.newPostElement}></textarea>
+                    <textarea ref={newPostElement} onChange={onChangePost} value={props.profilePage.newPostElement}></textarea>
                 </div>
                 <div><button onClick={addPost}>Add post</button></div>
             </div>
