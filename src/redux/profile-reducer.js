@@ -5,10 +5,10 @@ const UPDATE_NEW_POST = "UPDATE_NEW_POST";
 
 let initialState = {
     myposts : [
-        {message: 'How are you',id: 1, likesCount: 10},
-        {message: 'I am fine',id: 2, likesCount: 23},
-        {message: 'thanke',id: 3, likesCount: 15},
-        {message: 'you',id: 4, likesCount: 100}
+        {text: 'How are you',id: 1,likesCount: 10},
+        {text: 'I am fine',id: 2, likesCount: 23},
+        {text: 'thanke',id: 3, likesCount: 15},
+        {text: 'you',id: 4, likesCount: 100}
     ],
     // newProstValue: 'Some text',
     profile : null,
