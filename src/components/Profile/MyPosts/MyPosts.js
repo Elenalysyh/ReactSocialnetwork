@@ -1,16 +1,18 @@
 import React from "react";
 import style from "./MyPosts.module.css"
 import Post from "./Post/Post"
+import {addPostAC, onChangePostAC} from "../../../redux/state";
 
 const MyPosts = (props) => {
 let postsElements = props.profilePage.myposts.map(item => <Post kye={item.id} src={item.src} text={item.text}></Post>)
     let newPostElement = React.createRef()
 
     let addPost = () => {
-        props.addPost()
+    debugger
+        props.dispatch(addPostAC())
     }
     let onChangePost = () => {
-        props.onChangeMyPost(newPostElement.current.value)
+       props.dispatch(onChangePostAC(newPostElement.current.value))
     }
 
     return (
