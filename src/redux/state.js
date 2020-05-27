@@ -2,11 +2,6 @@ import React from "react";
 import profileReducer from "./profile-reducer";
 import dialogReducer from "./dialog-reducer";
 
-const ADD_POST = "ADD_POST";
-const UPDATE_NEW_POST = "UPDATE_NEW_POST";
-const ONCHANGE_MESSAGE_TEXT = "ONCHANGE_MESSAGE_TEXT";
-const ADD_MESSAGE = "ADD_MESSAGE"
-
 let store = {
     _state: {
         profilePage : {

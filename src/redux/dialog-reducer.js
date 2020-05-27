@@ -3,13 +3,13 @@ const ONCHANGE_MESSAGE_TEXT = "ONCHANGE_MESSAGE_TEXT";
 const ADD_MESSAGE = "ADD_MESSAGE"
 
 let initialState = {
-    dialogData : [
+    dialogsList : [
         {name: 'Dimych',id: 1},
         {name: 'Sveta',id: 2},
         {name: 'Anton',id: 3},
         {name: 'Some',id: 4}
     ],
-    messageData : [
+    messageList : [
         {message: 'Hello',id: 1},
         {message: 'Yeoo',id: 2},
         {message: 'Yeoo',id: 3},
