@@ -1,7 +1,11 @@
 import React from "react";
+import profileReducer from "./profile-reducer";
+import dialogReducer from "./dialog-reducer";
 
 const ADD_POST = "ADD_POST";
-const UPDATE_NEW_POST = "UPDATE_NEW_POST"
+const UPDATE_NEW_POST = "UPDATE_NEW_POST";
+const ONCHANGE_MESSAGE_TEXT = "ONCHANGE_MESSAGE_TEXT";
+const ADD_MESSAGE = "ADD_MESSAGE"
 
 let store = {
     _state: {
@@ -13,7 +17,9 @@ let store = {
             newPostElement: " "
         },
         dialogPage : { dialogsList: [{name: "Lena", id: 1}, {name: "Olya", id: 2}, {name: "Zina", id: 3}, {name: "Lina", id: 4}],
-            messageList : [ {message: 'some1', id: 1}, {message: 'some2', id: 2}, {message: 'some3', id: 3}, {message: 'some4', id: 4}]}
+            messageList : [ {message: 'some1', id: 1}, {message: 'some2', id: 2}, {message: 'some3', id: 3}, {message: 'some4', id: 4}],
+            newMessage: ''
+        }
     },
     getState() {
         return this._state
@@ -23,28 +29,15 @@ let store = {
         this.rerenderEntireTree = observer
     },
     dispatch(action) {
-        if(action.type === ADD_POST) {
-            let state = this.getState();
-            state.profilePage.myposts.push({
-                src: "https://logosrated.net/wp-content/uploads/parser/LOGO-1.png",
-                text: state.profilePage.newPostElement,
-                id: 6
-            })
-            state.profilePage.newPostElement = ""
-            this.rerenderEntireTree(this)
-        } else if(action.type === UPDATE_NEW_POST) {
-            let state = this.getState()
-            state.profilePage.newPostElement = action.text
-            this.rerenderEntireTree(this)
-        }
+
+        this._state.profilePage = profileReducer(this._state.profilePage, action)
+        this._state.dialogPage = dialogReducer(this._state.dialogPage, action)
+        this.rerenderEntireTree(this)
     }
 
 }
 
 window.store = store;
 
-export let addPostAC = () => ({ type: ADD_POST })
-
-export let onChangePostAC = (text) => ({type: UPDATE_NEW_POST, text: text})
 
 export default store

@@ -17,7 +17,7 @@ function App(props) {
                   {/*/!*<Profile></Profile>*!/*/}
                   {/*<Dialogs></Dialogs>*/}
                   <Route path={'/profile'}  render={() => <Profile profilePage={props.state.profilePage} dispatch={props.dispatch}></Profile>}></Route>
-                  <Route path={'/dialogs'} render={() => <Dialogs dialogPage={props.state.dialogPage}></Dialogs>}></Route>
+                  <Route path={'/dialogs'} render={() => <Dialogs dialogPage={props.state.dialogPage} dispatch={props.dispatch}></Dialogs>}></Route>
                   <Route path={'/users'} render={() => <Profile profilePage={props.state.profilePage}></Profile>}></Route>
 
 
