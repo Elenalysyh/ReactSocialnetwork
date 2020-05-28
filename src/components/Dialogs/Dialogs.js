@@ -1,21 +1,18 @@
 import React from "react";
 import style from "./Dialogs.module.css"
-import {NavLink} from "react-router-dom";
 import Dialog from "./Dialog/Dialog";
 import Message from "./Message/Message";
-import {addMessageAC, onChangeMessageTextAC} from "../../redux/dialog-reducer";
-
 
 const Dialogs = (props) => {
 
     let messageElem = React.createRef()
     let addMessage = () => {
-        props.dispatch(addMessageAC())
+        props.addMessage()
     }
 
     let onChangeMessageText = () => {
         let text = messageElem.current.value;
-        props.dispatch(onChangeMessageTextAC(text))
+        props.onChangeMessageText(text)
     }
     return (
         <div className={style.dialogs}>
@@ -34,7 +31,7 @@ const Dialogs = (props) => {
                 <div>
                     <button onClick={addMessage}>Add message</button>
                 </div>
-           </div>
+            </div>
         </div>
     )
 }

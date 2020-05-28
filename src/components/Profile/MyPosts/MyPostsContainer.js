@@ -1,20 +1,21 @@
 import React from "react";
-import style from "./MyPosts.module.css"
-import Post from "./Post/Post"
 import {addPostAC, onChangePostAC} from "../../../redux/profile-reducer";
 import MyPosts from "./MyPosts";
 
 const MyPostsContainer = (props) => {
 
     let addPost = () => {
-        props.dispatch(addPostAC())
+        props.store.dispatch(addPostAC())
     }
     let onChangePost = (text) => {
-       props.dispatch(onChangePostAC(text))
+       props.store.dispatch(onChangePostAC(text))
     }
-
+debugger
     return (
-        <MyPosts addPost={addPost} onChangePost = {onChangePost} profilePage={props.profilePage} ></MyPosts>
+        <MyPosts addPost={addPost}
+                 onChangePost = {onChangePost}
+                 myposts={props.store.getState().profilePage.myposts}
+                 newPostElement = {props.store.getState().profilePage.newPostElement} />
     )
 }
 
