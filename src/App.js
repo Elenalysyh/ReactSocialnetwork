@@ -17,8 +17,8 @@ function App(props) {
               <div className="app-wrapper-content">
                   {/*/!*<Profile></Profile>*!/*/}
                   {/*<Dialogs></Dialogs>*/}
-                  <Route path={'/profile'}  render={() => <Profile store={props.store} ></Profile>}></Route>
-                  <Route path={'/dialogs'} render={() => <DialogsContainer store={props.store}></DialogsContainer>}></Route>
+                  <Route path={'/profile'}  render={() => <Profile ></Profile>}></Route>
+                  <Route path={'/dialogs'} render={() => <DialogsContainer></DialogsContainer>}></Route>
                   <Route path={'/users'} render={() => <Profile store={props.store}></Profile>}></Route>
 
 
