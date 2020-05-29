@@ -1,0 +1,18 @@
+.ava img {
+    width: 70px;
+    height: 70px;
+}
+
+.userWrapper {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    margin: 30px;
+    padding: 10px;
+    border: 1px solid gray;
+}
+
+.buttonFollow {
+    padding: 10px;
+    background-color: cadetblue;
+    font-size: 15px;
+}

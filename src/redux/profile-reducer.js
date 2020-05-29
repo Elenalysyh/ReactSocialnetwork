@@ -5,7 +5,7 @@ const UPDATE_NEW_POST = "UPDATE_NEW_POST";
 
 let initialState = {
     myposts : [
-        {text: 'How are you',id: 1,likesCount: 10},
+        {text: 'How are you',id: 1 ,likesCount: 10},
         {text: 'I am fine',id: 2, likesCount: 23},
         {text: 'thanke',id: 3, likesCount: 15},
         {text: 'you',id: 4, likesCount: 100}

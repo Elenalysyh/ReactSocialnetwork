@@ -8,4 +8,3 @@ const StoreContext = React.createContext(null)
 //     </StoreContext.Provider>
 // }
 
-export default StoreContext

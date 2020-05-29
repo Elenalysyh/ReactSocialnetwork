@@ -3,9 +3,10 @@ import './App.css';
 import Header from "./components/Header/Header";
 import Nav from "./components/Nav/Nav";
 import Profile from "./components/Profile/Profile";
-import Dialogs from "./components/Dialogs/Dialogs";
 import {Route} from "react-router-dom";
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
+import Users from "./components/Users/Users";
+import UsersContainer from "./components/Users/UsersContainer";
 
 function App(props) {
   return (
@@ -19,7 +20,7 @@ function App(props) {
                   {/*<Dialogs></Dialogs>*/}
                   <Route path={'/profile'}  render={() => <Profile ></Profile>}></Route>
                   <Route path={'/dialogs'} render={() => <DialogsContainer></DialogsContainer>}></Route>
-                  <Route path={'/users'} render={() => <Profile store={props.store}></Profile>}></Route>
+                  <Route path={'/users'} render={() => <UsersContainer></UsersContainer>}></Route>
 
 
               </div>

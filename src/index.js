@@ -6,23 +6,14 @@ import * as serviceWorker from './serviceWorker';
 import store from "./redux/redux-store"
 import {BrowserRouter} from "react-router-dom";
 import StoreContext from "./StoreContext";
-
-export let rerenderEntireTree = (store) => {
+import {Provider} from "react-redux";
 
     ReactDOM.render(
         <BrowserRouter>
-            <StoreContext.Provider value={store}>
+            <Provider store={store}>
                 <App />
-            </StoreContext.Provider>
+            </Provider>
         </BrowserRouter>
         ,
         document.getElementById('root')
     );
-}
-
-
-rerenderEntireTree(store)
-
-store.subscribe(()=>{
-    rerenderEntireTree(store)
-})
