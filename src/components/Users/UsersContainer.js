@@ -2,9 +2,9 @@ import React from "react";
 import {connect} from "react-redux";
 import Users from "./Users";
 import {unfollowAC, followAC, setUsercAC} from "./../../redux/users-reducer"
+import UsersC from "./UsersC";
 
 let mapStateToProps = (state) => {
-    debugger
     return {
         items: state.usersPage.items
     }
@@ -25,6 +25,6 @@ let mapDispatchToProps = (dispatch) => {
     }
 }
 
-let UsersContainer = connect(mapStateToProps, mapDispatchToProps)(Users)
+let UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersC)
 
 export default UsersContainer
