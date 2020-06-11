@@ -5,7 +5,7 @@ import Nav from "./components/Nav/Nav";
 import Profile from "./components/Profile/Profile";
 import {Route} from "react-router-dom";
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
-import Users from "./components/Users/Users";
+import Users from "./components/Users/UsersDelete";
 import UsersContainer from "./components/Users/UsersContainer";
 
 function App(props) {

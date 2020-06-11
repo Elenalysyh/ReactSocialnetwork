@@ -15,6 +15,7 @@
 .app-wrapper-content {
   grid-area: c;
   background: #9898c9;
+  max-width: 900px;
 }
 
 .header {

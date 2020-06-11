@@ -4,3 +4,7 @@
     font-size: 20px;
     cursor: pointer;
 }
+
+.selectedPage {
+    font-weight: bold;
+}
