@@ -1,10 +1,12 @@
 import React from "react";
 import style from "./Users.module.css";
 import User from "./User/User";
+import Loader from "../common/Loader";
 
-let Users = ({pages , currentPage ,onPageChanged,items, follow, unfollow}) => {
-debugger
+let Users = ({isFetching, pages , currentPage ,onPageChanged,items, follow, unfollow}) => {
+
     return (<div>
+        {isFetching ?  <Loader></Loader>: '' }
 
         {pages.map((p)=> {
             return <span className={currentPage === p ? style.selectedPage : ""}

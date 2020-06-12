@@ -1,26 +1,29 @@
 import React from "react";
 import {connect} from "react-redux";
-import {unfollowAC, followAC, setUsercAC} from "./../../redux/users-reducer"
-import {currentPageAC, setTotalCountAC} from "../../redux/users-reducer";
+import {unfollow, follow, setUsers, isFetchingNow} from "./../../redux/users-reducer"
+import {setCurrentPage, finishFetching, setTotalCount} from "../../redux/users-reducer";
 import * as axios from "axios";
 import Users from "./Users";
 
-class UsersContainer extends React.Component{
+class  UsersContainer extends React.Component{
 
     componentDidMount() {
-
+        this.props.isFetchingNow()
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then(response=>{
-            console.log(response)
             this.props.setUsers(response.data.items)
-            this.props.setTotalUsersCount(response.data.totalCount)})
+            this.props.setTotalCount(response.data.totalCount)})
+            this.props.finishFetching()
 
     }
 
     onPageChanged = (page) => {
+        this.props.isFetchingNow()
         this.props.setCurrentPage(page)
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`).then(response=>{
             console.log(response)
+            this.props.finishFetching()
             this.props.setUsers(response.data.items)})
+
     }
 
     render() {
@@ -35,38 +38,24 @@ class UsersContainer extends React.Component{
                       onPageChanged = {this.onPageChanged}
                       items = {this.props.items}
                       follow = {this.props.follow}
-                      unfollow={this.props.unfollow}/> )
+                      unfollow={this.props.unfollow}
+                      isFetching={ this.props.isFetching}/> )
     }
 }
 
 let mapStateToProps = (state) => {
+
     return {
         items: state.usersPage.items,
         pageSize: state.usersPage.pageSize,
         totalUserCount: state.usersPage.totalUserCount,
-        currentPage: state.usersPage.currentPage
+        currentPage: state.usersPage.currentPage,
+        isFetching: state.usersPage.isFetching
     }
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-        follow: (userId) => {
-            dispatch(followAC(userId))
-        },
-        unfollow: (userId) => {
-            dispatch(unfollowAC(userId))
-        },
-        setUsers: (users) => {
-            dispatch(setUsercAC(users))
-        },
-        setCurrentPage: (page) => {
-            dispatch(currentPageAC(page))
-        },
-        setTotalUsersCount: (totalCount) => {
-            dispatch(setTotalCountAC(totalCount))
-        }
-
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer)
+export default connect(mapStateToProps, {
+    follow, unfollow, setUsers,
+    setCurrentPage, setTotalCount,isFetchingNow,
+    finishFetching
+})(UsersContainer)
