@@ -1,6 +1,7 @@
 import React from "react";
 const ADD_POST = "ADD_POST";
 const UPDATE_NEW_POST = "UPDATE_NEW_POST";
+const SET_USER_PROFILE = "SET_USER_PROFILE";
 
 
 let initialState = {
@@ -30,6 +31,9 @@ const profileReducer = (state = initialState, action) => {
         case UPDATE_NEW_POST:
             return {...state, newPostElement: action.text }
 
+        case SET_USER_PROFILE:
+            return {...state, profile: action.profile }
+
         default :
             return {...state}
     }
@@ -38,5 +42,7 @@ const profileReducer = (state = initialState, action) => {
 export let addPostAC = () => ({ type: ADD_POST })
 
 export let onChangePostAC = (text) => ({type: UPDATE_NEW_POST, text: text})
+
+export let setUserProfile = (profile) => ({type: SET_USER_PROFILE, profile})
 
 export default profileReducer

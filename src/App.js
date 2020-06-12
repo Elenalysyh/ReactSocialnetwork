@@ -2,11 +2,10 @@ import React from 'react';
 import './App.css';
 import Header from "./components/Header/Header";
 import Nav from "./components/Nav/Nav";
-import Profile from "./components/Profile/Profile";
 import {Route} from "react-router-dom";
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
-import Users from "./components/Users/UsersDelete";
 import UsersContainer from "./components/Users/UsersContainer";
+import ProfileContainer from "./components/Profile/ProfileContainer";
 
 function App(props) {
   return (
@@ -16,9 +15,7 @@ function App(props) {
               <Nav></Nav>
 
               <div className="app-wrapper-content">
-                  {/*/!*<Profile></Profile>*!/*/}
-                  {/*<Dialogs></Dialogs>*/}
-                  <Route path={'/profile'}  render={() => <Profile ></Profile>}></Route>
+                  <Route path={'/profile'}  render={() => <ProfileContainer ></ProfileContainer>}></Route>
                   <Route path={'/dialogs'} render={() => <DialogsContainer></DialogsContainer>}></Route>
                   <Route path={'/users'} render={() => <UsersContainer></UsersContainer>}></Route>
 
