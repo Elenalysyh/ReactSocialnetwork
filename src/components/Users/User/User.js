@@ -2,6 +2,7 @@ import React from "react";
 import style from "./User.module.css"
 import {NavLink} from "react-router-dom";
 import {followUser, unfollowUser, usersAPI} from "../../../api/api";
+import {followingInProgressNow} from "../../../redux/users-reducer";
 
 const User = (props) => {
 
@@ -15,22 +16,13 @@ const User = (props) => {
             <div>{props.name}</div>
             <div>{props.status}</div>
             {props.followed
-                ?  <button className={style.buttonFollow} onClick={()=>{
-                    usersAPI.unfollowUser(props.id).then(data=>{
-                        if(data.resultCode === 0) {
-                            props.unfollow(props.id)
-                        }
-                    })
+                ?  <button disabled={props.followingInProgress.some((idUser)=>idUser === props.id)} className={style.buttonFollow} onClick={()=>{
+                    props.unfollow(props.id)
                 }}
 
                 >Unfollow</button>
-                : <button className={style.buttonFollow} onClick={()=>{
-
-                    usersAPI.followUser(props.id).then(data=>{
-                        if(data.resultCode === 0) {
-                            props.follow(props.id)
-                         }
-                    })
+                : <button disabled={props.followingInProgress.some((idUser)=>idUser === props.id)} className={style.buttonFollow} onClick={()=>{
+                   props.follow(props.id)
                 }}>Follow</button>
             }
        </div>
