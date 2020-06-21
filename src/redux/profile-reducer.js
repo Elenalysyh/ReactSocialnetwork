@@ -1,4 +1,5 @@
 import React from "react";
+import {profileAPI} from "../api/api";
 const ADD_POST = "ADD_POST";
 const UPDATE_NEW_POST = "UPDATE_NEW_POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
@@ -44,5 +45,14 @@ export let addPostAC = () => ({ type: ADD_POST })
 export let onChangePostAC = (text) => ({type: UPDATE_NEW_POST, text: text})
 
 export let setUserProfile = (profile) => ({type: SET_USER_PROFILE, profile})
+
+
+export let getUserProfileThunk = (userId) => {
+    return (dispatch) => {
+        profileAPI.getUserProfile(userId).then(data=>{
+            dispatch(setUserProfile(data))
+        })
+    }
+}
 
 export default profileReducer

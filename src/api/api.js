@@ -30,7 +30,6 @@ export let authAPI = {
 
 export let profileAPI = {
     getUserProfile (userId) {
-
         return instance.get(`/profile/${userId}`).then(response => (response.data))
     }
 }
