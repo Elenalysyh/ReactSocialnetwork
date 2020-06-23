@@ -30,13 +30,11 @@ export const setAuthUserData = (id, email, login)=>({type: SET_USER_DATA, data: 
 
 export const authThunk = () => {
     return (dispatch) => {
-        debugger
         authAPI.authMe().then(data=>{
             if(data.resultCode === 0) {
                 let {id, email, login} = data.data
                 dispatch(setAuthUserData(id, email, login))
             }
-
         })
     }
 }

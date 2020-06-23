@@ -2,6 +2,7 @@ import React from "react";
 import style from "./Dialogs.module.css"
 import Dialog from "./Dialog/Dialog";
 import Message from "./Message/Message";
+import {Redirect} from "react-router-dom";
 
 const Dialogs = (props) => {
 
@@ -14,6 +15,7 @@ const Dialogs = (props) => {
         let text = messageElem.current.value;
         props.onChangeMessageText(text)
     }
+
     return (
         <div className={style.dialogs}>
             <div className={style.dialogsItems}>
