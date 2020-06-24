@@ -1,11 +1,14 @@
 import React from "react";
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {getUserProfileThunk, setUserProfile} from "../../redux/profile-reducer";
-import {Redirect, withRouter} from "react-router-dom";
-import {getUserProfile, profileAPI} from "../../api/api";
+import {
+    getUserProfileThunk,
+    getUserStatusThunk,
+    setUserProfile,
+    updateUserStatus
+} from "../../redux/profile-reducer";
+import {withRouter} from "react-router-dom";
 import WithLogin from "../../api/WithLogin";
-import Dialogs from "../Dialogs/Dialogs";
 import {compose} from "redux";
 
 class ProfileContainer  extends React.Component {
@@ -15,21 +18,24 @@ class ProfileContainer  extends React.Component {
             userId = 7971
         }
         this.props.getUserProfileThunk(userId)
-
+        this.props.getUserStatusThunk(userId)
     }
 
     render() {
         return (
-            <Profile {...this.props}  profile={this.props.profile}/>
+            <Profile {...this.props}
+                     profile={this.props.profile}
+                     status={this.props.status}
+                     updateUserStatus={this.props.updateUserStatus}/>
         )
     }
 }
 
 let mapStateToProps = (state) => ({
-    profile: state.profilePage.profile
+    profile: state.profilePage.profile,
+    status: state.profilePage.status
 });
 
 export default compose(
     withRouter,
-    WithLogin,
-    connect(mapStateToProps, {setUserProfile, getUserProfileThunk}) )(ProfileContainer)
+    connect(mapStateToProps, {setUserProfile, getUserProfileThunk, updateUserStatus, getUserStatusThunk}) )(ProfileContainer)
