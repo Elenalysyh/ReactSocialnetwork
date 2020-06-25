@@ -1,11 +1,8 @@
 import React from "react";
 import {profileAPI} from "../api/api";
 const ADD_POST = "ADD_POST";
-const UPDATE_NEW_POST = "UPDATE_NEW_POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
 const SET_USER_STATUS = "SET_USER_STATUS";
-const GET_USER_STATUS = "GET_USER_STATUS";
-
 
 let initialState = {
     myposts : [
@@ -14,7 +11,6 @@ let initialState = {
         {text: 'thanke',id: 3, likesCount: 15},
         {text: 'you',id: 4, likesCount: 100}
     ],
-    // newProstValue: 'Some text',
     profile : null,
     status: 'Empty'
 }
@@ -26,14 +22,9 @@ const profileReducer = (state = initialState, action) => {
             return {...state,
                 myposts: [...state.myposts, {
                     src: "https://logosrated.net/wp-content/uploads/parser/LOGO-1.png",
-                    text: state.newPostElement,
+                    text: action.mypost,
                     id: 6
-                }],
-                newPostElement: ''}
-
-        case UPDATE_NEW_POST:
-            return {...state, newPostElement: action.text }
-
+                }]}
         case SET_USER_PROFILE:
             return {...state, profile: action.profile }
         case SET_USER_STATUS:
@@ -43,9 +34,7 @@ const profileReducer = (state = initialState, action) => {
     }
 }
 
-export let addPostAC = () => ({ type: ADD_POST })
-
-export let onChangePostAC = (text) => ({type: UPDATE_NEW_POST, text: text})
+export let addPostAC = (mypost) => ({ type: ADD_POST , mypost})
 
 export let setUserProfile = (profile) => ({type: SET_USER_PROFILE, profile})
 

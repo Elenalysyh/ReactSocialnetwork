@@ -3,17 +3,12 @@ import style from "./Dialogs.module.css"
 import Dialog from "./Dialog/Dialog";
 import Message from "./Message/Message";
 import {Redirect} from "react-router-dom";
+import DialogForm from "./DialogForm";
 
 const Dialogs = (props) => {
 
-    let messageElem = React.createRef()
-    let addMessage = () => {
-        props.addMessage()
-    }
-
-    let onChangeMessageText = () => {
-        let text = messageElem.current.value;
-        props.onChangeMessageText(text)
+    let addMessage = (data) => {
+        props.addMessage(data.dialogText)
     }
 
     return (
@@ -27,12 +22,16 @@ const Dialogs = (props) => {
                 {props.dialogPage.messageList.map((item)=> {
                     return <Message kye={item.id} message={item.message}></Message>
                 })}
-                <div>
-                    <textarea value={props.dialogPage.newMessage} ref={messageElem} onChange={onChangeMessageText}></textarea>
-                </div>
-                <div>
-                    <button onClick={addMessage}>Add message</button>
-                </div>
+                <DialogForm onSubmit={addMessage}></DialogForm>
+                {/*<form>*/}
+                {/*    <div>*/}
+                {/*        <textarea value={props.dialogPage.newMessage} ref={messageElem} onChange={onChangeMessageText}></textarea>*/}
+                {/*    </div>*/}
+                {/*    <div>*/}
+                {/*        <button onClick={addMessage}>Add message</button>*/}
+                {/*    </div>*/}
+                {/*</form>*/}
+
             </div>
         </div>
     )

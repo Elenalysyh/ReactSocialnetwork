@@ -21,21 +21,17 @@ const dialogReducer = (state=initialState, action) => {
     switch (action.type) {
         case ADD_MESSAGE :
             return {...state,
-                newMessage: "",
-                messageList: [...state.messageList, {id: 6, message: state.newMessage}]
+                messageList: [...state.messageList, {id: 6, message: action.dialogText}]
 
             }
-        case ONCHANGE_MESSAGE_TEXT :
-            return {...state,
-                newMessage: action.text}
+        default:
+                return {...state}
     }
-
-    return {...state}
 }
 
 
 export let onChangeMessageTextAC = (text) =>({type: ONCHANGE_MESSAGE_TEXT, text})
 
-export let addMessageAC = () => ({type: ADD_MESSAGE})
+export let addMessageAC = (dialogText) => ({type: ADD_MESSAGE, dialogText})
 
 export default dialogReducer

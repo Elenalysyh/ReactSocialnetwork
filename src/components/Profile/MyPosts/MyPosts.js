@@ -1,27 +1,19 @@
 import React from "react";
 import style from "./MyPosts.module.css"
 import Post from "./Post/Post"
+import MyPostForm from "./MyPostForm";
 
 const MyPosts = (props) => {
 
     let postsElements = props.myposts.map(item =>( <Post kye={item.id} text={item.text}></Post>))
-    let newPostElement = React.createRef()
 
-    let addPost = () => {
-        props.addPost()
-    }
-    let onChangePost = () => {
-       props.onChangePost(newPostElement.current.value)
+    let addPost = (data) => {
+        props.addPost(data.mypost)
     }
 
     return (
         <div className={style.posts}>My post
-            <div>
-                <div>
-                    <textarea ref={newPostElement} onChange={onChangePost} value={props.newPostElement}></textarea>
-                </div>
-                <div><button onClick={addPost}>Add post</button></div>
-            </div>
+            <MyPostForm onSubmit={addPost}></MyPostForm>
             <div>
                 <p>My posts</p>
                 <ul className={style.items}>

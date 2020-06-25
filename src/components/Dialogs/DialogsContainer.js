@@ -14,11 +14,8 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        onChangeMessageText: (text) => {
-            dispatch(onChangeMessageTextAC(text))
-        },
-        addMessage: () => {
-            dispatch(addMessageAC())
+        addMessage: (dialogText) => {
+            dispatch(addMessageAC(dialogText))
         }
     }
 }
