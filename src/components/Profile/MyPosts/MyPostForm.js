@@ -1,8 +1,7 @@
 import React from "react";
 import {Field, reduxForm} from "redux-form";
 import {maxLengthValidate, required} from "../../../utils/validators";
-import TextArea from "../../common/FormControls/FormControls";
-
+import {TextArea} from "../../common/FormControls/FormControls";
 
 let maxLength5 = maxLengthValidate(5)
 let MyPostForm = (props) => {

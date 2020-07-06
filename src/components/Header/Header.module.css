@@ -16,3 +16,12 @@
 .loginBlock a {
     color: white;
 }
+
+.logOut {
+    margin: 20px;
+}
+
+.logOut button {
+    padding: 5px;
+    cursor: pointer;
+}
