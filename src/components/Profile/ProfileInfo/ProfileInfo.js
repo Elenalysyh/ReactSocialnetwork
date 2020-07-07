@@ -3,6 +3,7 @@ import Loader from "../../common/Loader";
 import style from "./ProfileInfo.module.css"
 import avatarDefault from "./../../../assets/images/flamingo.jpg"
 import ProfileStatus from "./ProfileStatus";
+import ProfileStatusWithHook from "./ProfileStatusWithHook";
 
 const ProfileInfo = (props) => {
 
@@ -13,7 +14,7 @@ const ProfileInfo = (props) => {
     return (
         <div className={style.profileContainer}>
             <img src={ props.profile.photos.large || avatarDefault}/>
-            <ProfileStatus status={props.status} updateUserStatus={props.updateUserStatus}></ProfileStatus>
+            <ProfileStatusWithHook status={props.status} updateUserStatus={props.updateUserStatus}></ProfileStatusWithHook>
             <div>
                 <div>{props.profile.aboutMe || "Something new"}</div>
                 <div>{props.profile.contacts.facebook || "Nothing"}</div>
