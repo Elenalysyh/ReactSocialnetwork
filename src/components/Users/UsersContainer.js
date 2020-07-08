@@ -31,13 +31,9 @@ class  UsersContainer extends React.Component{
     }
 
     render() {
-        let paginationSize = Math.ceil(this.props.totalUserCount/this.props.pageSize)
-        let pages = []
-        for( let i=1; i<=paginationSize; i++) {
-            pages.push(i)
-        }
 
-        return(<Users pages={pages}
+        return(<Users totalUserCount={this.props.totalUserCount}
+                      pageSize = {this.props.pageSize}
                       currentPage={this.props.currentPage}
                       onPageChanged = {this.onPageChanged}
                       items = {this.props.items}

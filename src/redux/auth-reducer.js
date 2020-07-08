@@ -2,7 +2,7 @@ import React from "react";
 import {authAPI} from "../api/api";
 import {stopSubmit} from "redux-form";
 
-const SET_USER_DATA = "SET_USER_DATA";
+const SET_USER_DATA = "/auth/SET_USER_DATA";
 
 let initialState = {
     userId: null,
@@ -29,19 +29,19 @@ export const setAuthUserData = (id, email, login, isAuth)=>({type: SET_USER_DATA
 // ThunkCreator
 
 export const authThunk = () => {
-    return (dispatch) => {
-        return authAPI.authMe().then(data=>{
+    return async (dispatch) => {
+        let data = await authAPI.authMe()
             if(data.resultCode === 0) {
                 let {id, email, login} = data.data
                 dispatch(setAuthUserData(id, email, login, true))
             }
-        })
+
     }
 }
 
 export const loginThunk = (email, password, rememberme) => {
-    return (dispatch) => {
-        authAPI.login(email, password, true).then(data=> {
+    return async (dispatch) => {
+        let data = await authAPI.login(email, password, true)
             if(data.data.resultCode === 0) {
                 dispatch(authThunk())
             } else {
@@ -49,16 +49,14 @@ export const loginThunk = (email, password, rememberme) => {
                 let action = stopSubmit('login', {_error: message})
                 dispatch(action)
             }
-        })
     }
 }
 export const logoutThunk = () => {
-    return (dispatch) => {
-        authAPI.logout().then(data=> {
+    return async (dispatch) => {
+        let data = await authAPI.logout()
             if(data.data.resultCode === 0) {
                 dispatch(setAuthUserData(null, null, null, false))
             }
-        })
     }
 }
 

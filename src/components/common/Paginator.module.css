@@ -1,0 +1,19 @@
+.pagination span {
+    padding: 10px;
+    margin: 2px;
+    border-radius: 20%;
+    background-color: #98ff57;
+    border: 1px solid #5454b3;
+}
+
+.pagination button {
+    padding: 10px;
+    margin: 2px;
+    border-radius: 10%;
+    border: 1px solid #5454b3;
+
+}
+
+.pagination .selectedPage {
+    background-color: #e27133;
+}

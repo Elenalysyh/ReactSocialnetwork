@@ -2,16 +2,18 @@ import React from "react";
 import style from "./Users.module.css";
 import User from "./User/User";
 import Loader from "../common/Loader";
+import Paginator from "../common/Paginator";
 
-let Users = ({isFetching, pages , currentPage ,onPageChanged,items, follow, unfollow, followingInProgressNow, followingInProgress}) => {
+let Users = ({isFetching, totalUserCount ,pageSize, currentPage ,onPageChanged,items, follow, unfollow, followingInProgressNow, followingInProgress}) => {
 
     return (<div>
-        {isFetching ?  <Loader></Loader>: '' }
+        {isFetching ?  <Loader/>: '' }
 
-        {pages.map((p)=> {
-            return <span className={currentPage === p ? style.selectedPage : ""}
-                         onClick={()=> {onPageChanged(p)}}>{p}</span>
-        })}
+        <Paginator totalUserCount={totalUserCount}
+                   pageSize = {pageSize}
+                   currentPage={currentPage}
+                   onPageChanged={onPageChanged}/>
+
         {items.map((item)=>{
             return <User name={item.name}
                          photos={item.photos}
@@ -21,7 +23,7 @@ let Users = ({isFetching, pages , currentPage ,onPageChanged,items, follow, unfo
                          id={item.id}
                          unfollow={unfollow}
                          followingInProgressNow = {followingInProgressNow}
-                         followingInProgress = {followingInProgress}></User>
+                         followingInProgress = {followingInProgress}/>
         })}
         <button className={style.showMoreButton}>Show more</button>
     </div>)
