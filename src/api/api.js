@@ -25,13 +25,17 @@ export let usersAPI = {
 
 export let authAPI = {
     authMe() { return  instance.get(`/auth/me`).then(response => (response.data))},
-    login(email, password, rememberme) {
-        return instance.post('/auth/login', {email, password, rememberme})},
+    login(email, password, rememberme, captcha) {
+        return instance.post('/auth/login', {email, password, rememberme, captcha})},
     logout () {
         return instance.delete('/auth/login')}
 
 }
 
+export let securityApi = {
+    getCaptureUrl() {
+        return  instance.get(`/security/get-captcha-url`).then(response => (response.data))}
+}
 
 export let profileAPI = {
     getUserProfile (userId) {
@@ -42,6 +46,19 @@ export let profileAPI = {
     },
     updateStatus(status){
         return instance.put(`/profile/status`,{status})
+    },
+    savePhoto(photo) {
+        const formData = new FormData();
+        formData.append("image", photo);
+
+        return instance.post('/profile/photo', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+    },
+    saveProfile(info) {
+        return instance.put(`/profile`,{...info})
     }
 }
 

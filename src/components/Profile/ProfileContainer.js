@@ -3,7 +3,7 @@ import Profile from "./Profile";
 import {connect} from "react-redux";
 import {
     getUserProfileThunk,
-    getUserStatusThunk,
+    getUserStatusThunk, saveAvatarPhoto, saveProfile,
     setUserProfile,
     updateUserStatus
 } from "../../redux/profile-reducer";
@@ -12,7 +12,7 @@ import WithLogin from "../../api/WithLogin";
 import {compose} from "redux";
 
 class ProfileContainer  extends React.Component {
-    componentDidMount() {
+    refreshProfile() {
         let userId = this.props.match.params.userId
         if(!userId) {
             userId = this.props.authorizedUserId
@@ -24,12 +24,25 @@ class ProfileContainer  extends React.Component {
         this.props.getUserStatusThunk(userId)
     }
 
+    componentDidMount() {
+        this.refreshProfile()
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.props.match.params.userId != prevProps.match.params.userId  ) {
+            this.refreshProfile()
+        }
+    }
+
     render() {
         return (
             <Profile {...this.props}
+                isOwner={ !this.props.match.params.userId}
                      profile={this.props.profile}
                      status={this.props.status}
-                     updateUserStatus={this.props.updateUserStatus}/>
+                     updateUserStatus={this.props.updateUserStatus}
+                     saveAvatarPhoto={this.props.saveAvatarPhoto}
+                     saveProfile={this.props.saveProfile}/>
         )
     }
 }
@@ -38,9 +51,10 @@ let mapStateToProps = (state) => ({
     profile: state.profilePage.profile,
     status: state.profilePage.status,
     authorizedUserId: state.auth.id,
-    isAuth: state.auth.isAuth
+    isAuth: state.auth.isAuth,
+
 });
 
 export default compose(
     withRouter,
-    connect(mapStateToProps, {setUserProfile, getUserProfileThunk, updateUserStatus, getUserStatusThunk}) )(ProfileContainer)
+    connect(mapStateToProps, {setUserProfile, getUserProfileThunk, updateUserStatus, getUserStatusThunk, saveAvatarPhoto,saveProfile}) )(ProfileContainer)

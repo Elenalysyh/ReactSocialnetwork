@@ -23,6 +23,14 @@ let LoginForm = (props) => {
             {props.error}
         </div>}
         <div>
+            {props.getCapture &&
+                <div>
+                    <img src={props.getCapture} />
+                    <Field placeholder={'captcha'} component={Input} name={"captcha"} validate={[required]}/>
+                </div>
+            }
+        </div>
+        <div>
             <button>Login</button>
         </div>
     </form>)
@@ -34,22 +42,22 @@ let LoginReduxForm = reduxForm({
 
 let Login = (props) => {
     const OnSubmit = (data) => {
-        props.loginThunk(data.email, data.password, true)
-        console.log(data)
+        props.loginThunk(data.email, data.password, true, data.captcha)
     }
 
     if(props.isAuth) {
-        return <Redirect to={'/profile'}></Redirect>
+        return <Redirect to={'/profile'}/>
     }
     return (<div>
         <h1>LOGIN</h1>
-        <LoginReduxForm onSubmit={OnSubmit}></LoginReduxForm>
+        <LoginReduxForm onSubmit={OnSubmit} getCapture={props.getCapture}/>
     </div>)
 }
 
 let mapStateToProps = (state) => {
     return {
-        isAuth: state.auth.isAuth
+        isAuth: state.auth.isAuth,
+        getCapture: state.auth.getCapture
     }
 }
 
