@@ -1,5 +1,5 @@
 import React from "react";
-import {addMessageAC, onChangeMessageTextAC} from "../../redux/dialog-reducer";
+import {addMessageAC, onChangeMessageTextAC} from "../../redux/dialog-reducerTs";
 import Dialogs from "./Dialogs";
 import StoreContext from "../../StoreContext";
 import {connect} from "react-redux";

@@ -34,4 +34,4 @@ export let onChangeMessageTextAC = (text) =>({type: ONCHANGE_MESSAGE_TEXT, text}
 
 export let addMessageAC = (dialogText) => ({type: ADD_MESSAGE, dialogText})
 
-export default dialogReducer
+export default dialogReducerTs
