@@ -1,8 +1,9 @@
 import React from "react";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
+import {ProfileInfoType} from "../../types/types";
 
-const Profile = (props) => {
+const Profile : React.FC<ProfileInfoType>  = (props ) => {
 
     return (
         <div>
@@ -12,9 +13,8 @@ const Profile = (props) => {
                          profile={props.profile}
                          updateUserStatus={props.updateUserStatus}
                          status={props.status}/>
-            <MyPostsContainer></MyPostsContainer>
+            <MyPostsContainer/>
         </div>
     )
 }
-
 export default Profile

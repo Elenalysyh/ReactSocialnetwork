@@ -2,12 +2,18 @@ import React from "react";
 import style from "./MyPosts.module.css"
 import Post from "./Post/Post"
 import MyPostForm from "./MyPostForm";
+import {PostsType} from "../../../types/types";
 
-const MyPosts = (props) => {
 
+type PropsType = {
+    myposts: Array<PostsType>
+    addPost: (data: string) => void
+}
+const MyPosts : React.FC<PropsType>  = (props) => {
+//@ts-ignore
     let postsElements = props.myposts.map(item =>( <Post kye={item.id} text={item.text}></Post>))
 
-    let addPost = (data) => {
+    let addPost = (data: any) => {
         props.addPost(data.mypost)
     }
 

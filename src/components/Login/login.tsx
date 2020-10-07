@@ -1,14 +1,26 @@
 import React from "react";
-import {Field, reduxForm} from "redux-form";
+import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {maxLengthValidate, required} from "../../utils/validators";
 import {Input} from "../common/FormControls/FormControls";
 import {connect} from "react-redux";
-import {loginT, loginThunk} from "../../redux/auth-reducer";
+import {loginThunk} from "../../redux/auth-reducer";
 import {Redirect} from "react-router-dom";
 import style from "../common/FormControls/FormControls.module.css"
+import {StateType} from "../../redux/redux-store";
 
 let maxLength5 = maxLengthValidate(25)
-let LoginForm = (props) => {
+
+type FormDataValueType = {
+    email: string
+    password: string
+    rememberme: boolean
+    captcha: string
+}
+type LoginOwnPropType = {
+    getCapture: string | null
+}
+
+let LoginForm : React.FC<InjectedFormProps<FormDataValueType, LoginOwnPropType> & LoginOwnPropType> = (props) => {
     return (<form onSubmit={props.handleSubmit}>
         <div>
             <Field placeholder={'Email'} component={Input} name={'email'} validate={[required, maxLength5]}/>
@@ -36,12 +48,22 @@ let LoginForm = (props) => {
     </form>)
 }
 
-let LoginReduxForm = reduxForm({
+let LoginReduxForm = reduxForm<FormDataValueType, LoginOwnPropType>({
     form: 'login'
 })(LoginForm)
 
-let Login = (props) => {
-    const OnSubmit = (data) => {
+type MapStateToPropsType = {
+    isAuth: boolean
+    getCapture: string | null
+}
+
+type MapDispatchToPropsType = {
+    loginThunk: (email: string | null, password: string | null, rememberme: boolean, captcha: string | null) => void
+}
+
+
+let Login: React.FC<MapStateToPropsType & MapDispatchToPropsType> = (props) => {
+    const OnSubmit = (data: any) => {
         props.loginThunk(data.email, data.password, true, data.captcha)
     }
 
@@ -54,11 +76,13 @@ let Login = (props) => {
     </div>)
 }
 
-let mapStateToProps = (state) => {
+
+let mapStateToProps = (state: StateType) : MapStateToPropsType => {
     return {
         isAuth: state.auth.isAuth,
         getCapture: state.auth.getCapture
     }
 }
+
 
 export default connect(mapStateToProps, {loginThunk})(Login)

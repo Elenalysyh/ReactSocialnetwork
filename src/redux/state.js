@@ -1,6 +1,6 @@
 import React from "react";
 import profileReducer from "./profile-reducer";
-import dialogReducerTs from "./dialog-reducerTs";
+import dialogReducer from "./dialog-reducer";
 
 let store = {
     _state: {
@@ -26,7 +26,7 @@ let store = {
     dispatch(action) {
 
         this._state.profilePage = profileReducer(this._state.profilePage, action)
-        this._state.dialogPage = dialogReducerTs(this._state.dialogPage, action)
+        this._state.dialogPage = dialogReducer(this._state.dialogPage, action)
         this.rerenderEntireTree(this)
     }
 

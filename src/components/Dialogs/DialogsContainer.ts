@@ -1,20 +1,23 @@
-import React from "react";
-import {addMessageAC, onChangeMessageTextAC} from "../../redux/dialog-reducerTs";
+import {addMessageAC, DialogPageType, onChangeMessageTextAC} from "../../redux/dialog-reducer";
 import Dialogs from "./Dialogs";
-import StoreContext from "../../StoreContext";
 import {connect} from "react-redux";
 import WithLogin from "../../api/WithLogin";
 import {compose} from "redux";
+import { StateType } from "../../redux/redux-store";
 
-let mapStateToProps = (state) => {
+type mapStateToPropsType = {
+    dialogPage: DialogPageType
+}
+
+let mapStateToProps = (state: mapStateToPropsType) => {
     return {
         dialogPage: state.dialogPage
     }
 }
 
-let mapDispatchToProps = (dispatch) => {
+let mapDispatchToProps = (dispatch: any) => {
     return {
-        addMessage: (dialogText) => {
+        addMessage: (dialogText: string) => {
             dispatch(addMessageAC(dialogText))
         }
     }

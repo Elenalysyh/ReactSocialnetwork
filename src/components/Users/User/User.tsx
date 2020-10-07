@@ -1,14 +1,21 @@
 import React from "react";
 import style from "./User.module.css"
 import {NavLink} from "react-router-dom";
-import {followUser, unfollowUser, usersAPI} from "../../../api/api";
-import {followingInProgressNow} from "../../../redux/users-reducer";
+import {UserType} from "../../../types/types";
 
-const User = (props) => {
+type PropsType = {
+    followingInProgress: Array<number>,
+    followingInProgressNow: (isFollowing: boolean, userId: number) => void
+    unfollow: (id: number) => (userId: number) => void,
+    follow: (id: number) => (userId: number) => void,
+    id: number
+}
+const User: React.FC<PropsType & UserType> = (props) => {
 
     return (<div className={style.userWrapper} key={props.id}>
         <div className={style.ava}>
            <NavLink to={`/profile/${props.id}`}>
+               {/*@ts-ignore*/}
                <img src={props.photos.small}/>
            </NavLink>
         </div>

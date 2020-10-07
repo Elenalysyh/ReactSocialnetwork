@@ -1,26 +1,25 @@
-import React, {useState} from "react";
+import React, {ChangeEvent, useState} from "react";
 import Loader from "../../common/Loader";
 import style from "./ProfileInfo.module.css"
 import avatarDefault from "./../../../assets/images/flamingo.jpg"
-import ProfileStatus from "./ProfileStatus";
 import ProfileStatusWithHook from "./ProfileStatusWithHook";
-import {Field, reduxForm} from "redux-form";
+import {Field, FormSubmitHandler, reduxForm} from "redux-form";
 import {Input, TextArea} from "../../common/FormControls/FormControls";
-import {required} from "../../../utils/validators";
+import {ProfileInfoType, ProfileType} from "../../../types/types";
 
-const ProfileInfo = (props) => {
+const ProfileInfo = (props: ProfileInfoType) => {
 
-    const [editMode, setEditMode] = useState();
+    const [editMode, setEditMode] = useState<boolean>();
 
     if(!props.profile) {
         return <Loader></Loader>
     }
-    const saveFile = (e) => {
+    const saveFile = (e: ChangeEvent<HTMLInputElement> | any) => {
         if(e.target.files.length) {
             props.saveAvatarPhoto(e.target.files[0])
         }
     }
-    const onSubmit = (info)=> {
+    const onSubmit = (info: any)=> {
         props.saveProfile(info)
         setEditMode(false)
     }
@@ -32,6 +31,7 @@ const ProfileInfo = (props) => {
             {editMode
                 ? <ProfileFormRedux
                     initialValues={props.profile}
+                 // @ts-ignore
                     profile = {props.profile}
                     onSubmit={onSubmit}/>
                 : <ProfileData goToEditData={()=>{ setEditMode(true)}} profile={props.profile} isOwner={props.isOwner}/>}
@@ -42,13 +42,21 @@ const ProfileInfo = (props) => {
     )
 }
 
-let Contact = (props) => {
+type ContactType = {
+    contactInfo: string
+    info: string
+}
+let Contact = (props: ContactType) => {
     return (
         <div><b>{props.contactInfo}</b> {props.info || "Empty"}</div>
     )
 }
+type ProfileFormType = {
+    handleSubmit: () => void
+    profile: ProfileType
+}
 
-let ProfileForm = (props) => {
+let ProfileForm = (props: ProfileFormType) => {
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
@@ -76,7 +84,7 @@ let ProfileForm = (props) => {
             <div>Contact:
                 <ul>
                     {Object.keys(props.profile.contacts).map((contactInfo, index, arr) =>
-
+                        // @ts-ignore
                         <li kye={contactInfo}>
                             <span> {contactInfo}  </span>
                             <Field placeholder={contactInfo} component={Input} name={'contacts.' + contactInfo}/>
@@ -91,9 +99,15 @@ let ProfileForm = (props) => {
 
 let ProfileFormRedux = reduxForm({
     form: 'profile'
+    // @ts-ignore
 })(ProfileForm)
 
-let ProfileData = (props) => {
+type ProfileDataType = {
+    isOwner: boolean
+    goToEditData: () => void
+    profile: ProfileType
+}
+let ProfileData = (props: ProfileDataType) => {
     return (
         <div>
             <div>
@@ -115,6 +129,7 @@ let ProfileData = (props) => {
             <div>Contact:
                 <ul>
                     {Object.keys(props.profile.contacts).map(contactInfo =>
+                        // @ts-ignore
                         <Contact contactInfo={contactInfo} info={props.profile.contacts[contactInfo]} kye={contactInfo}/>)}
 
                 </ul>

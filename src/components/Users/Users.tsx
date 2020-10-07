@@ -3,8 +3,24 @@ import style from "./Users.module.css";
 import User from "./User/User";
 import Loader from "../common/Loader";
 import Paginator from "../common/Paginator";
+import {UserType} from "../../types/types";
 
-let Users = ({isFetching, totalUserCount ,pageSize, currentPage ,onPageChanged,items, follow, unfollow, followingInProgressNow, followingInProgress}) => {
+type PropsType = {
+    isFetching: boolean,
+    items: Array<UserType>,
+    follow: (id: number) => void,
+    unfollow: (id: number) => void,
+    followingInProgressNow: (isFollowing: boolean, userId: number) => void,
+    followingInProgress: Array<number>
+}
+type PaginatorType = {
+    totalUserCount: number,
+    pageSize: number,
+    onPageChanged: (page: number) => void,
+    currentPage: number
+};
+
+let Users : React.FC<PropsType & PaginatorType> = ({isFetching, totalUserCount ,pageSize, currentPage ,onPageChanged,items, follow, unfollow, followingInProgressNow, followingInProgress}) => {
 
     return (<div>
         {isFetching ?  <Loader/>: '' }
@@ -15,12 +31,15 @@ let Users = ({isFetching, totalUserCount ,pageSize, currentPage ,onPageChanged,i
                    onPageChanged={onPageChanged}/>
 
         {items.map((item)=>{
+
             return <User name={item.name}
                          photos={item.photos}
                          followed={item.followed}
                          key={item.id}
-                         follow={follow}
                          id={item.id}
+                         // @ts-ignore
+                         follow={follow}
+                // @ts-ignore
                          unfollow={unfollow}
                          followingInProgressNow = {followingInProgressNow}
                          followingInProgress = {followingInProgress}/>
