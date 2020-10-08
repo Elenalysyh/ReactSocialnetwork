@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {unfollow, follow, FollowingInProgressNowType} from "../../redux/users-reducer"
+import {unfollow, follow} from "../../redux/users-reducer"
 import {
     setCurrentPage,
     followingInProgressNow, getUsersThunk
@@ -35,7 +35,7 @@ type MapDispatchToPropsType = {
     follow: (userId: number) => void,
     unfollow: (userId: number) => void,
     setCurrentPage: (page: number) => void
-    followingInProgressNow: (isFollowing: boolean, userId: number) => FollowingInProgressNowType,
+    followingInProgressNow: (isFollowing: boolean, userId: number) => void
 }
 
 type Props = MapStateToPropsType & MapDispatchToPropsType & PropsType

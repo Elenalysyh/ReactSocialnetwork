@@ -1,14 +1,12 @@
-import {profileAPI} from "../api/api";
 import {PhotosType, PostsType, ProfileType } from "../types/types";
-import {FormSubmitHandler} from "redux-form";
-import {ThunkAction} from "redux-thunk";
-import {StateType} from "./redux-store";
-import {Dispatch} from "redux";
-const ADD_POST = "ADD_POST";
-const SET_USER_PROFILE = "SET_USER_PROFILE";
-const SET_USER_STATUS = "SET_USER_STATUS";
-const SAVE_FILE_SUCCESS = "SAVE_FILE_SUCCESS";
-const SAVE_PROFILE_SUCCESS = "SAVE_PROFILE_SUCCESS";
+import {BaseThunkActionType, InferActionsType, StateType} from "./redux-store";
+import {profileAPI} from "../api/profile-api";
+import {ResultCodeLoginEnum} from "../api/api";
+const ADD_POST = "SN/profile/ADD_POST";
+const SET_USER_PROFILE = "SN/profile/SET_USER_PROFILE";
+const SET_USER_STATUS = "SN/profile/SET_USER_STATUS";
+const SAVE_FILE_SUCCESS = "SN/profile/SAVE_FILE_SUCCESS";
+const SAVE_PROFILE_SUCCESS = "SN/profile/SAVE_PROFILE_SUCCESS";
 
 export type initialStateType = typeof initialState
 
@@ -47,54 +45,30 @@ const profileReducer = (state = initialState, action: ActionType) : initialState
     }
 }
 
-type AddPostAcType = {
-    type: typeof ADD_POST
-    mypost: string
+export const actions = {
+    savePhotoSuccess : (photo: PhotosType)  => ({type: "SN/profile/SAVE_FILE_SUCCESS", photo} as const),
+    setUserStatus : (status: string) => ({ type: "SN/profile/SET_USER_STATUS", status} as const),
+    setUserProfile : (profile : ProfileType) => ({type: "SN/profile/SET_USER_PROFILE", profile} as const),
+    addPostAC : (mypost : string) => ({ type: "SN/profile/ADD_POST" , mypost} as const),
+    saveProfileSuccess: (profile: ProfileType) => ({type: "SN/profile/SAVE_PROFILE_SUCCESS", profile} as const)
 }
 
-export let addPostAC = (mypost : string) : AddPostAcType => ({ type: ADD_POST , mypost})
+type ActionType = InferActionsType<typeof actions>
 
-type SetUserProfileType = {
-    type: typeof SET_USER_PROFILE
-    profile: ProfileType
-}
-export let setUserProfile = (profile : ProfileType): SetUserProfileType => ({type: SET_USER_PROFILE, profile})
-
-type SetUserStatusType = {
-    type: typeof SET_USER_STATUS
-    status: string
-}
-export let setUserStatus = (status: string) : SetUserStatusType=> ({ type: SET_USER_STATUS, status})
-
-type SavePhotoSuccessType = {
-    type: typeof SAVE_FILE_SUCCESS
-    photo: PhotosType
-}
-export let savePhotoSuccess = (photo: PhotosType) : SavePhotoSuccessType => ({type: SAVE_FILE_SUCCESS, photo})
-
-type SaveProfileSuccessType = {
-    type: typeof SAVE_PROFILE_SUCCESS
-    profile: ProfileType
-}
-export let saveProfileSuccess = (profile: ProfileType): SaveProfileSuccessType => ({type: SAVE_PROFILE_SUCCESS, profile})
-
-type ActionType = AddPostAcType | SetUserProfileType | SetUserStatusType | SavePhotoSuccessType | SaveProfileSuccessType
-
-
-type ThunkActionType = ThunkAction<Promise<void>, StateType, unknown, ActionType>
+type ThunkActionType = BaseThunkActionType<ActionType>
 
 export let getUserStatusThunk = (userId: number) : ThunkActionType => {
     return async (dispatch) => {
         let status = await profileAPI.getStatus(userId)
-        dispatch(setUserStatus(status.data))
+        dispatch(actions.setUserStatus(status))
     }
 }
 
 export let saveAvatarPhoto = (photo: PhotosType) : ThunkActionType=> {
     return async (dispatch) => {
-        let response = await profileAPI.savePhoto(photo);
-        if(response.data.resultCode === 0) {
-            dispatch(savePhotoSuccess(photo))
+        let data = await profileAPI.savePhoto(photo);
+        if(data.resultCode === ResultCodeLoginEnum.Success) {
+            dispatch(actions.savePhotoSuccess(photo))
         }
     }
 }
@@ -103,9 +77,9 @@ export let saveProfile = (info: any) : ThunkActionType => {
     return async (dispatch, getState) => {
         const userId = getState().auth.id
         let response = await profileAPI.saveProfile({...info})
-        if (response.data.resultCode === 0) {
+        if (response.data.resultCode === ResultCodeLoginEnum.Success) {
             let responseProfile = await profileAPI.getUserProfile(userId)
-            dispatch(saveProfileSuccess(responseProfile))
+            dispatch(actions.saveProfileSuccess(responseProfile))
         }
     }
 }
@@ -113,8 +87,8 @@ export let saveProfile = (info: any) : ThunkActionType => {
 export let updateUserStatus = (status: string) : ThunkActionType => {
     return async (dispatch) => {
         let response = await profileAPI.updateStatus(status)
-        if(response.data.resultCode === 0) {
-            dispatch(setUserStatus(status))
+        if(response.resultCode === ResultCodeLoginEnum.Success) {
+            dispatch(actions.setUserStatus(status))
         }
     }
 }
@@ -122,7 +96,7 @@ export let updateUserStatus = (status: string) : ThunkActionType => {
 export let getUserProfileThunk = (userId: number) : ThunkActionType => {
     return async (dispatch) => {
         let response = await profileAPI.getUserProfile(userId)
-        dispatch(setUserProfile(response))
+        dispatch(actions.setUserProfile(response))
     }
 }
 

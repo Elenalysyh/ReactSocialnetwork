@@ -1,12 +1,9 @@
-import React from "react";
-import {authAPI, ResultCodeLoginEnum, ResultCodeWithCaptcha, securityApi} from "../api/api";
-import {stopSubmit} from "redux-form";
-import {ThunkAction} from "redux-thunk";
-import {StateType} from "./redux-store";
-import {FormAction} from "redux-form/lib/actions";
 
-const SET_USER_DATA = "/auth/SET_USER_DATA";
-const GET_CAPTURE_SECCESS = "GET_CAPTURE_SECCESS";
+import {ResultCodeLoginEnum, ResultCodeWithCaptcha} from "../api/api";
+import {FormAction, stopSubmit} from "redux-form";
+import {BaseThunkActionType, InferActionsType, StateType} from "./redux-store";
+import {authAPI} from "../api/auth-api";
+import {securityApi} from "../api/security-api";
 
 let initialState = {
     id: null as number | null,
@@ -20,38 +17,24 @@ export type initialStateType = typeof initialState
 
 // ActionCreator
 
-type setAuthUserDataType = {
-    id: number | null,
-    email: string | null,
-    login: string | null,
-    isAuth: boolean
+const actions = {
+    setAuthUserData : (userId: number | null, email: string | null, login: string | null, isAuth: boolean) =>
+        ({type: "SN/auth/SET_USER_DATA", data: {id: userId, email, login, isAuth}} as const),
+
+    getCaptureSuccess: (url: string) =>({type: "SN/auth/GET_CAPTURE_SECCESS", url} as const)
+
 }
 
-type setAuthUserDataActionType = {
-    type: typeof SET_USER_DATA,
-    data: setAuthUserDataType
-}
-export const setAuthUserData =
-    (userId: number | null, email: string | null, login: string | null, isAuth: boolean) :
-        setAuthUserDataActionType =>({type: SET_USER_DATA, data: {id: userId, email, login, isAuth}})
-
-type getCaptureSuccessType = {
-    type: typeof GET_CAPTURE_SECCESS,
-    url: string
-}
-
-export const getCaptureSuccess = (url: string) : getCaptureSuccessType =>({type: GET_CAPTURE_SECCESS, url})
-
-type ActionType = setAuthUserDataActionType | getCaptureSuccessType | FormAction
+type ActionType = InferActionsType<typeof actions>
 
 const authReducer = (state=initialState, action: ActionType) : initialStateType => {
     switch (action.type) {
-        case SET_USER_DATA :
+        case "SN/auth/SET_USER_DATA" :
             return {...state,
                 // @ts-ignore
                 ...action.data
             }
-        case GET_CAPTURE_SECCESS :
+        case "SN/auth/GET_CAPTURE_SECCESS" :
             return {...state,
                 // @ts-ignore
                 getCapture: action.url
@@ -63,14 +46,14 @@ const authReducer = (state=initialState, action: ActionType) : initialStateType 
 
 // ThunkCreator
 
-type ThunkType = ThunkAction<Promise<void>, StateType, unknown, ActionType>
+type ThunkType = BaseThunkActionType<ActionType | FormAction>
 
 export const authThunk = (): ThunkType => {
     return async (dispatch) => {
         let data = await authAPI.authMe()
         if(data.resultCode === 0) {
             let {id, email, login} = data.data
-            dispatch(setAuthUserData(id, email, login, true))
+            dispatch(actions.setAuthUserData(id, email, login, true))
         }
     }
 }
@@ -95,16 +78,15 @@ export const loginThunk =
 export const logoutThunk = () : ThunkType => {
     return async (dispatch) => {
         let data = await authAPI.logout()
-        if(data.resultCode === 0) {
-            dispatch(setAuthUserData(null, null, null, false))
+        if(data.resultCode === ResultCodeLoginEnum.Success) {
+            dispatch(actions.setAuthUserData(null, null, null, false))
         }
     }
 }
 export const getCaptureThunk = () : ThunkType => {
     return async (dispatch) => {
         let data = await securityApi.getCaptureUrl()
-        let url = data.url
-        dispatch(getCaptureSuccess(url))
+        dispatch(actions.getCaptureSuccess(data.url))
     }
 }
 

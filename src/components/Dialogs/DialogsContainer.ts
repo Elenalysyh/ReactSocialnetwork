@@ -1,4 +1,4 @@
-import {addMessageAC, DialogPageType, onChangeMessageTextAC} from "../../redux/dialog-reducer";
+import {actions} from "../../redux/dialog-reducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import WithLogin from "../../api/WithLogin";
@@ -6,7 +6,10 @@ import {compose} from "redux";
 import { StateType } from "../../redux/redux-store";
 
 type mapStateToPropsType = {
-    dialogPage: DialogPageType
+    dialogPage: {
+        id: number
+        message: string
+    }
 }
 
 let mapStateToProps = (state: mapStateToPropsType) => {
@@ -18,7 +21,7 @@ let mapStateToProps = (state: mapStateToPropsType) => {
 let mapDispatchToProps = (dispatch: any) => {
     return {
         addMessage: (dialogText: string) => {
-            dispatch(addMessageAC(dialogText))
+            dispatch(actions.addMessageAC(dialogText))
         }
     }
 }
