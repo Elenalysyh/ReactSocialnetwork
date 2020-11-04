@@ -34,9 +34,9 @@ export type ProfileType = {
 }
 
 export type ProfileInfoType = {
-    profile: ProfileType
-    saveAvatarPhoto: (target: string) => void
-    saveProfile: (info: FormSubmitHandler) => void
+    profile: ProfileType | null
+    saveAvatarPhoto: (file: File) => void
+    saveProfile: (profile:ProfileType) => Promise<any>
     updateUserStatus: () => void
     isOwner: boolean
     status: string

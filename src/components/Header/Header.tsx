@@ -1,8 +1,21 @@
 import React from "react";
 import style from "./Header.module.css"
 import {NavLink} from "react-router-dom";
+import exp from "constants";
 
-const Header = ({id, email, login, isAuth, logoutThunk}) => {
+
+export type MapPropsType = {
+    login: string,
+    isAuth: boolean,
+    userId: number,
+    email: string
+}
+export type DispatchPropsType = {
+    logoutThunk: () => void
+}
+type PropsType = MapPropsType & DispatchPropsType;
+
+const Header: React.FC<PropsType> = ({login, isAuth, logoutThunk}) => {
 
     return (
         <header  className={style.header}>
@@ -16,4 +29,4 @@ const Header = ({id, email, login, isAuth, logoutThunk}) => {
     )
 }
 
-export default Header
+export default Header;

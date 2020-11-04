@@ -2,7 +2,11 @@ import React from "react";
 import style from "./Dialog.module.css"
 import {NavLink} from "react-router-dom";
 
-const Dialog = ({name, id}) => {
+type PropsType = {
+    name: string,
+    id: string
+}
+const Dialog: React.FC<PropsType> = ({name, id}) => {
     let path = '/dialogs/' + id
     return (
         <div className={style.dialog}>
@@ -11,4 +15,4 @@ const Dialog = ({name, id}) => {
     )
 }
 
-export default Dialog
+export default Dialog;

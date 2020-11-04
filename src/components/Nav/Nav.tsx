@@ -2,7 +2,11 @@ import React from "react";
 import style from "./Nav.module.css"
 import {Switch, Route, NavLink} from "react-router-dom"
 
-const Nav = (props) => {
+type PropsType = {
+
+}
+
+const Nav: React.FC<PropsType> = (props) => {
     return (
         <nav className={style.nav}>
             {/*<Switch>*/}

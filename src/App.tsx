@@ -1,27 +1,36 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, Component } from 'react';
 import './App.css';
 import Nav from "./components/Nav/Nav";
 import {Redirect, Route, Switch, withRouter} from "react-router-dom";
-// import DialogsContainer from "./components/Dialogs/DialogsContainer";
-//import UsersContainer from "./components/Users/UsersContainer";
-//import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
-// import Login from "./components/Login/login";
 import {connect} from "react-redux";
-import {authThunk} from "./redux/auth-reducer";
 import {compose} from "redux";
 import {initialazedApp} from "./redux/app-reducer";
 import Loader from "./components/common/Loader";
+import {StateType} from "./redux/redux-store";
 
 const DialogsContainer = lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = lazy(() => import('./components/Profile/ProfileContainer'));
 const UsersContainer = lazy(() => import('./components/Users/UsersContainer'));
 const Login = lazy(() => import('./components/Login/login'));
 
-class App extends React.Component {
-    componentDidMount() {
-        this.props.initialazedApp()
+type MapPropsType = ReturnType<typeof mapStateToProps>
+type DispatchPropsType = { initialazedApp: ()=> void }
+
+class App extends Component<MapPropsType & DispatchPropsType> {
+    catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
+        alert("Some error occured")
     }
+
+    componentDidMount() {
+        this.props.initialazedApp();
+        // window.addEventListener("unhandlerejjection", this.catchAllUnhandledErrors)
+
+    }
+    componentWillUnmount(): void {
+        // window.removeEventListener("unhandlerejjection", this.catchAllUnhandledErrors )
+    }
+
     render() {
         if (!this.props.initialized) {
             return <Loader/>
@@ -48,12 +57,14 @@ class App extends React.Component {
     }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: StateType) => {
     return {
         initialized: state.isInitialize.initialized
     }
 }
 
-export default compose(
+
+
+export default compose<React.ComponentType>(
     withRouter,
-    connect(mapStateToProps, {initialazedApp})) (App);
+    connect(mapStateToProps, {initialazedApp}))(App);

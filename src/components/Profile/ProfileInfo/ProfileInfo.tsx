@@ -3,25 +3,36 @@ import Loader from "../../common/Loader";
 import style from "./ProfileInfo.module.css"
 import avatarDefault from "./../../../assets/images/flamingo.jpg"
 import ProfileStatusWithHook from "./ProfileStatusWithHook";
-import {Field, FormSubmitHandler, reduxForm} from "redux-form";
+import {Field, FormSubmitHandler, InjectedFormProps, reduxForm} from "redux-form";
 import {Input, TextArea} from "../../common/FormControls/FormControls";
 import {ProfileInfoType, ProfileType} from "../../../types/types";
 
-const ProfileInfo = (props: ProfileInfoType) => {
+type PropsType = {
+    profile: ProfileType | null
+    status: string
+    updateUserStatus: () => void
+    isOwner: boolean
+    saveAvatarPhoto: (file: File) => void
+    saveProfile: (profile:ProfileType) => Promise<any>
+}
+
+const ProfileInfo: React.FC<PropsType> = (props) => {
 
     const [editMode, setEditMode] = useState<boolean>();
 
     if(!props.profile) {
         return <Loader></Loader>
     }
-    const saveFile = (e: ChangeEvent<HTMLInputElement> | any) => {
-        if(e.target.files.length) {
+    const saveFile = (e: ChangeEvent<HTMLInputElement>) => {
+        if(e.target.files?.length) {
             props.saveAvatarPhoto(e.target.files[0])
         }
     }
-    const onSubmit = (info: any)=> {
-        props.saveProfile(info)
-        setEditMode(false)
+    const onSubmit = (info: ProfileType)=> {
+        props.saveProfile(info).then(() => {
+            setEditMode(false)
+        })
+
     }
 
     return (
@@ -37,7 +48,7 @@ const ProfileInfo = (props: ProfileInfoType) => {
                 : <ProfileData goToEditData={()=>{ setEditMode(true)}} profile={props.profile} isOwner={props.isOwner}/>}
 
 
-            <ProfileStatusWithHook status={props.status} updateUserStatus={props.updateUserStatus}></ProfileStatusWithHook>
+            <ProfileStatusWithHook status={props.status} updateUserStatus={props.updateUserStatus}/>
         </div>
     )
 }
@@ -46,17 +57,23 @@ type ContactType = {
     contactInfo: string
     info: string
 }
-let Contact = (props: ContactType) => {
+let Contact: React.FC<ContactType> = (props) => {
     return (
         <div><b>{props.contactInfo}</b> {props.info || "Empty"}</div>
     )
 }
 type ProfileFormType = {
-    handleSubmit: () => void
     profile: ProfileType
 }
 
-let ProfileForm = (props: ProfileFormType) => {
+type FormProfileType = {
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    fullName: string
+    aboutMe: string
+}
+
+let ProfileForm: React.FC<InjectedFormProps<ProfileType,ProfileFormType> & ProfileFormType> = (props) => {
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
@@ -83,23 +100,26 @@ let ProfileForm = (props: ProfileFormType) => {
 
             <div>Contact:
                 <ul>
-                    {Object.keys(props.profile.contacts).map((contactInfo, index, arr) =>
-                        // @ts-ignore
-                        <li kye={contactInfo}>
-                            <span> {contactInfo}  </span>
-                            <Field placeholder={contactInfo} component={Input} name={'contacts.' + contactInfo}/>
-                        </li>
-                       )}
-
+                    {Object.keys(props.profile.contacts).map((contactInfo) => {
+                        return (
+                            //@ts-ignore
+                            <li kye={contactInfo}>
+                                <span> {contactInfo}  </span>
+                                <Field placeholder={contactInfo} component={Input} name={'contacts.' + contactInfo}/>
+                            </li>
+                        )
+                      }
+                    )}
                 </ul>
             </div>
         </form>
     )
 }
 
-let ProfileFormRedux = reduxForm({
+
+
+let ProfileFormRedux = reduxForm<ProfileType,ProfileFormType>({
     form: 'profile'
-    // @ts-ignore
 })(ProfileForm)
 
 type ProfileDataType = {
@@ -107,7 +127,8 @@ type ProfileDataType = {
     goToEditData: () => void
     profile: ProfileType
 }
-let ProfileData = (props: ProfileDataType) => {
+
+let ProfileData: React.FC<ProfileDataType> = (props) => {
     return (
         <div>
             <div>

@@ -5,7 +5,7 @@ type PropsType = {
     updateUserStatus: (status: string) => void
 }
 
-let ProfileStatusWithHook = (props: PropsType) => {
+let ProfileStatusWithHook : React.FC<PropsType>= (props) => {
         let [editMode, setEditMode] = useState(false)
         let [status, setStatus] = useState(props.status || 'Empty')
 

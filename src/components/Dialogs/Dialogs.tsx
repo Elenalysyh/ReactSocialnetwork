@@ -2,24 +2,38 @@ import React from "react";
 import style from "./Dialogs.module.css"
 import Dialog from "./Dialog/Dialog";
 import Message from "./Message/Message";
-import {Redirect} from "react-router-dom";
 import DialogForm from "./DialogForm";
+import {InitialStateType} from "../../redux/dialog-reducer";
 
-const Dialogs = (props) => {
+type OwnPropsType = {
+    dialogPage: InitialStateType,
+    addMessage: (messageText: string) => void
+}
 
-    let addMessage = (data) => {
-        props.addMessage(data.dialogText)
+export type NewMessageFormType = {
+    dialogText: string
+}
+
+const Dialogs: React.FC<OwnPropsType> = (props) => {
+
+    let state = props.dialogPage;
+
+    let addMessage = (values: NewMessageFormType) => {
+        props.addMessage(values.dialogText)
     }
+
 
     return (
         <div className={style.dialogs}>
             <div className={style.dialogsItems}>
-                {props.dialogPage.dialogsList.map((item) => {
+                {state.dialogsList.map((item) => {
+                    //@ts-ignore
                     return <Dialog name={item.name} id={item.id} kye={item.id}></Dialog>
                 })}
             </div>
             <div className={style.messages}>
-                {props.dialogPage.messageList.map((item)=> {
+                {state.messageList.map((item)=> {
+                    //@ts-ignore
                     return <Message kye={item.id} message={item.message}></Message>
                 })}
                 <DialogForm onSubmit={addMessage}></DialogForm>

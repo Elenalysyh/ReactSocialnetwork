@@ -1,18 +1,12 @@
 import {actions} from "../../redux/dialog-reducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
-import WithLogin from "../../api/WithLogin";
+import WithLogin from "../../hoc/WithLogin";
 import {compose} from "redux";
 import { StateType } from "../../redux/redux-store";
 
-type mapStateToPropsType = {
-    dialogPage: {
-        id: number
-        message: string
-    }
-}
 
-let mapStateToProps = (state: mapStateToPropsType) => {
+let mapStateToProps = (state: StateType) => {
     return {
         dialogPage: state.dialogPage
     }
@@ -26,7 +20,7 @@ let mapDispatchToProps = (dispatch: any) => {
     }
 }
 
-const DialogsContainer = compose(WithLogin,
+const DialogsContainer = compose<React.ComponentType>(WithLogin,
     connect(mapStateToProps, mapDispatchToProps))(Dialogs)
 
 export default DialogsContainer

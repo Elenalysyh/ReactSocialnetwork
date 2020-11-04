@@ -21,9 +21,8 @@ export const actions = {
     addMessageAC : (dialogText: string) => ({type: "SN/dialog/ADD_MESSAGE", dialogText} as const)
 }
 
-type ActionType = InferActionsType<typeof actions>
 
-const dialogReducer = (state=initialState, action: ActionType) => {
+const dialogReducer = (state=initialState, action: ActionType): InitialStateType => {
     switch (action.type) {
         case "SN/dialog/ADD_MESSAGE" :
             return {...state,
@@ -35,6 +34,7 @@ const dialogReducer = (state=initialState, action: ActionType) => {
     }
 }
 
-
+export type InitialStateType = typeof initialState;
+type ActionType = InferActionsType<typeof actions>
 
 export default dialogReducer

@@ -1,25 +1,31 @@
 import React from "react";
 import style from "./MyPosts.module.css"
 import Post from "./Post/Post"
-import MyPostForm from "./MyPostForm";
+import MyPostForm, {AddPostFormValuesType} from "./MyPostForm";
 import {PostsType} from "../../../types/types";
 
 
-type PropsType = {
+export type MapPropsType = {
     myposts: Array<PostsType>
     addPost: (data: string) => void
 }
+export type DispatchPropsType = {
+    addPost: (data: string) => void
+}
+
+type PropsType = MapPropsType & DispatchPropsType
+
 const MyPosts : React.FC<PropsType>  = (props) => {
 //@ts-ignore
     let postsElements = props.myposts.map(item =>( <Post kye={item.id} text={item.text}></Post>))
 
-    let addPost = (data: any) => {
+    let addPost = (data: AddPostFormValuesType) => {
         props.addPost(data.mypost)
     }
 
     return (
         <div className={style.posts}>My post
-            <MyPostForm onSubmit={addPost}></MyPostForm>
+            <MyPostForm onSubmit={addPost}/>
             <div>
                 <p>My posts</p>
                 <ul className={style.items}>
@@ -30,4 +36,6 @@ const MyPosts : React.FC<PropsType>  = (props) => {
     )
 }
 
-export default MyPosts
+const MyPostsMemorized = React.memo(MyPosts)
+
+export default MyPostsMemorized
