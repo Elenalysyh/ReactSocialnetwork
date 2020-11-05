@@ -3,6 +3,7 @@ import { ThunkAction } from "redux-thunk";
 import {BaseThunkActionType, InferActionsType, StateType} from "./redux-store";
 import {usersAPI} from "../api/users-api";
 import {ResultCodeLoginEnum} from "../api/api";
+import {strict} from "assert";
 type InitialStateType = typeof initialState
 
 let initialState = {
@@ -11,8 +12,14 @@ let initialState = {
     totalUserCount: 0,
     currentPage: 2,
     isFetching: true,
-    followingInProgress: [2,3] as Array<number>
+    followingInProgress: [2,3] as Array<number>,
+    filter: {
+        term: "",
+        friend: null as null | boolean
+    }
 }
+export type initialStateType = typeof initialState
+export type FilterType = typeof initialState.filter
 
 const usersReducer = (state=initialState, action: ActionType) : InitialStateType => {
     switch (action.type) {
@@ -48,6 +55,10 @@ const usersReducer = (state=initialState, action: ActionType) : InitialStateType
                 return {...state,
                 isFetching: true
                 }
+            case "SN/USERS/SET_FILTER" :
+                return  {
+                    ...state, filter: action.payload
+                }
             case "FINISH_FETCHING" :
                 return {...state,
                     isFetching: false
@@ -69,6 +80,7 @@ export const action = {
     setCurrentPage: (page: number)  => ({type: "SET_CURRENT_PAGE", currentPage: page} as const),
     setUsers: (users: Array<UserType>) => ({type: "SET_USERS", users} as const),
     setTotalCount: (totalCount: number)  => ({type: "SET_TOTAL_COUNT", totalCount: totalCount} as const),
+    setFilter: (filter: FilterType) => ({type: "SN/USERS/SET_FILTER", payload: filter} as const),
     isFetchingNow: ()  => ({type: "IS_FETCHING"} as const),
     finishFetching: ()  => ({type: "FINISH_FETCHING"} as const),
     followingInProgressNow: (isFollowing: boolean, userId: number) => ({type: "FOLLOWING_IN_PROGRESS", isFollowing, userId} as const)
@@ -82,10 +94,11 @@ type ActionType = InferActionsType<typeof action>
 //Thunk
 type ThunkActionType = BaseThunkActionType<ActionType>
 
-export const getUsersThunk =  (currentPage: number, pageSize: number) : ThunkActionType => {
+export const getUsersThunk =  (currentPage: number, pageSize: number, filter: FilterType) : ThunkActionType => {
     return async (dispatch) => {
         dispatch(action.isFetchingNow())
-        let data = await usersAPI.getUsers(currentPage, pageSize)
+        dispatch(action.setFilter(filter))
+        let data = await usersAPI.getUsers(currentPage, pageSize, filter.term, filter.friend)
         dispatch(action.setUsers(data.items))
         dispatch(action.setTotalCount(data.totalCount))
         dispatch(action.finishFetching())

@@ -6,6 +6,9 @@ export let getUsersItem = (state: StateType) => {
 export let getPageSize = (state: StateType) => {
     return state.usersPage.pageSize
 }
+export let getFilter = (state: StateType) => {
+    return state.usersPage.filter
+}
 
 export let getTotalUserCount = (state: StateType) => {
     return state.usersPage.totalUserCount

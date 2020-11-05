@@ -4,6 +4,8 @@ import User from "./User/User";
 import Loader from "../common/Loader";
 import Paginator from "../common/Paginator";
 import {UserType} from "../../types/types";
+import UsersSearchForm from "./UsersSearchForm"
+import {FilterType} from "../../redux/users-reducer";
 
 type PropsType = {
     isFetching: boolean,
@@ -16,15 +18,16 @@ type PropsType = {
 type PaginatorType = {
     totalUserCount: number,
     pageSize: number,
+    onFilterChanged: (filter: FilterType) => void,
     onPageChanged: (page: number) => void,
     currentPage: number
 };
 
-let Users : React.FC<PropsType & PaginatorType> = ({isFetching, totalUserCount ,pageSize, currentPage ,onPageChanged,items, follow, unfollow, followingInProgressNow, followingInProgress}) => {
+let Users : React.FC<PropsType & PaginatorType> = ({isFetching, totalUserCount ,pageSize, currentPage ,onPageChanged , onFilterChanged,items, follow, unfollow, followingInProgressNow, followingInProgress}) => {
 
     return (<div>
         {isFetching ?  <Loader/>: '' }
-
+        <UsersSearchForm onFilterChanged={onFilterChanged}/>
         <Paginator totalUserCount={totalUserCount}
                    pageSize = {pageSize}
                    currentPage={currentPage}
@@ -47,5 +50,6 @@ let Users : React.FC<PropsType & PaginatorType> = ({isFetching, totalUserCount ,
         <button className={style.showMoreButton}>Show more</button>
     </div>)
 }
+
 
 export default Users
