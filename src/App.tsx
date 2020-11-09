@@ -8,11 +8,11 @@ import {compose} from "redux";
 import {initialazedApp} from "./redux/app-reducer";
 import Loader from "./components/common/Loader";
 import {StateType} from "./redux/redux-store";
+import {Login} from "./components/Login/login";
 
 const DialogsContainer = lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = lazy(() => import('./components/Profile/ProfileContainer'));
-const UsersContainer = lazy(() => import('./components/Users/UsersContainer'));
-const Login = lazy(() => import('./components/Login/login'));
+const UsersPage = lazy(() => import('./components/Users/UsersContainer'));
 
 type MapPropsType = ReturnType<typeof mapStateToProps>
 type DispatchPropsType = { initialazedApp: ()=> void }
@@ -45,7 +45,7 @@ class App extends Component<MapPropsType & DispatchPropsType> {
                             <Route exact path={'/'} render={() => <Redirect to={'/profile'}/>}/>
                             <Route path={'/profile/:userId?'} render={() => <ProfileContainer/>}/>
                             <Route path={'/dialogs'} render={() => <DialogsContainer/>}/>
-                            <Route path={'/users'} render={() => <UsersContainer pageTitle={"Users page"}/>}/>
+                            <Route path={'/users'} render={() => <UsersPage pageTitle={"Users page"}/>}/>
                             <Route path={'/login'} render={() => <Login/>}/>
                             <Route path={'*'} render={() => <div>404 NOT FOUNDED</div>}/>
                         </Switch>
@@ -62,8 +62,6 @@ let mapStateToProps = (state: StateType) => {
         initialized: state.isInitialize.initialized
     }
 }
-
-
 
 export default compose<React.ComponentType>(
     withRouter,

@@ -6,8 +6,8 @@ import {UserType} from "../../../types/types";
 type PropsType = {
     followingInProgress: Array<number>,
     followingInProgressNow: (isFollowing: boolean, userId: number) => void
-    unfollow: (id: number) => (userId: number) => void,
-    follow: (id: number) => (userId: number) => void,
+    unfollow: (userId: number) => void,
+    follow:  (userId: number) => void,
     id: number
 }
 const User: React.FC<PropsType & UserType> = (props) => {

@@ -2,7 +2,7 @@ import React from "react";
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {maxLengthValidate, required} from "../../utils/validators";
 import {Input} from "../common/FormControls/FormControls";
-import {connect} from "react-redux";
+import {connect, useDispatch, useSelector} from "react-redux";
 import {loginThunk} from "../../redux/auth-reducer";
 import {Redirect} from "react-router-dom";
 import style from "../common/FormControls/FormControls.module.css"
@@ -52,37 +52,20 @@ let LoginReduxForm = reduxForm<FormDataValueType, LoginOwnPropType>({
     form: 'login'
 })(LoginForm)
 
-type MapStateToPropsType = {
-    isAuth: boolean
-    getCapture: string | null
-}
+export const Login: React.FC = (props) => {
+    const getCapture = useSelector((state:StateType)=> state.auth.getCapture)
+    const isAuth = useSelector((state: StateType) => state.auth.isAuth)
 
-type MapDispatchToPropsType = {
-    loginThunk: (email: string | null, password: string | null, rememberme: boolean, captcha: string | null) => void
-}
-
-
-let Login: React.FC<MapStateToPropsType & MapDispatchToPropsType> = (props) => {
+    const dispatch = useDispatch();
     const OnSubmit = (data: any) => {
-        props.loginThunk(data.email, data.password, true, data.captcha)
+        dispatch(loginThunk(data.email, data.password, true, data.captcha))
     }
 
-    if(props.isAuth) {
+    if(isAuth) {
         return <Redirect to={'/profile'}/>
     }
     return (<div>
         <h1>LOGIN</h1>
-        <LoginReduxForm onSubmit={OnSubmit} getCapture={props.getCapture}/>
+        <LoginReduxForm onSubmit={OnSubmit} getCapture={getCapture}/>
     </div>)
 }
-
-
-let mapStateToProps = (state: StateType) : MapStateToPropsType => {
-    return {
-        isAuth: state.auth.isAuth,
-        getCapture: state.auth.getCapture
-    }
-}
-
-
-export default connect(mapStateToProps, {loginThunk})(Login)
