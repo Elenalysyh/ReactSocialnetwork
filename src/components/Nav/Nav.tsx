@@ -26,7 +26,7 @@ const Nav: React.FC<PropsType> = (props) => {
             <div className={`${style.item} ${style.activeLink}` }>
                 <NavLink to="/dialogs" activeClassName={style.activeLink}>Dialog</NavLink></div>
             <div className={style.item} >
-                <NavLink to="/users" activeClassName={style.activeLink}>Users</NavLink>
+                <NavLink to="/developers" activeClassName={style.activeLink}>Users</NavLink>
             </div>
             <div className={style.item}>
                 <NavLink to="/Music" activeClassName={style.activeLink}>Music</NavLink>
