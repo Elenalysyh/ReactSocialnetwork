@@ -8,6 +8,8 @@ import {Redirect} from "react-router-dom";
 import style from "../common/FormControls/FormControls.module.css"
 import {StateType} from "../../redux/redux-store";
 
+
+
 let maxLength5 = maxLengthValidate(25)
 
 type FormDataValueType = {
